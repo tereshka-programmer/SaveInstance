@@ -18,29 +18,29 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.221"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.382" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btIncrement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
         android:text="Increment"
-        app:layout_constraintEnd_toEndOf="@+id/tvCounter"
-        app:layout_constraintStart_toStartOf="@+id/tvCounter"
-        app:layout_constraintTop_toBottomOf="@+id/tvCounter" />
+        app:layout_constraintBottom_toBottomOf="@+id/tvCounter"
+        app:layout_constraintStart_toEndOf="@+id/tvCounter"
+        app:layout_constraintTop_toTopOf="@+id/tvCounter"
+        app:layout_constraintVertical_bias="0.486" />
 
     <Button
         android:id="@+id/btRandomColor"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Random Color"
-        app:layout_constraintEnd_toEndOf="@+id/btIncrement"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/btIncrement"
-        app:layout_constraintTop_toBottomOf="@+id/btIncrement" />
+        app:layout_constraintBottom_toBottomOf="@+id/btIncrement"
+        app:layout_constraintStart_toEndOf="@+id/btIncrement"
+        app:layout_constraintTop_toTopOf="@+id/btIncrement" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
