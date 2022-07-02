@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.core.content.ContextCompat
+import androidx.versionedparcelable.VersionedParcelize
 import com.example.saveinstance.databinding.ActivityMainBinding
+import kotlinx.android.parcel.Parcelize
 import java.io.Serializable
 import kotlin.properties.Delegates
 import kotlin.random.Random
@@ -30,14 +32,14 @@ class MainActivity : AppCompatActivity() {
                 texttColor = ContextCompat.getColor(this, R.color.purple_700)
             )
         } else {
-            savedInstanceState.getSerializable(KEY_STATE) as State
+            savedInstanceState.getParcelable(KEY_STATE)!!
         }
         renderState()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putSerializable(KEY_STATE, state)
+        outState.putParcelable(KEY_STATE, state)
     }
 
     private fun increment(){
@@ -59,11 +61,11 @@ class MainActivity : AppCompatActivity() {
         binding.tvCounter.setTextColor(state.texttColor)
     }
 
-
+    @Parcelize
     class State(
         var counterValue: Int,
         var texttColor: Int
-    ) : Serializable
+    ) : Parcelable
 
     companion object{
         const val KEY_STATE = "STATE"
