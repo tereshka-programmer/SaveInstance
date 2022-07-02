@@ -4,7 +4,9 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.versionedparcelable.VersionedParcelize
 import com.example.saveinstance.databinding.ActivityMainBinding
 import kotlinx.android.parcel.Parcelize
@@ -16,58 +18,33 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
 
-    lateinit var state: State
+    private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.btIncrement.setOnClickListener { increment() }
-        binding.btRandomColor.setOnClickListener { setRandomColor() }
+        binding.btIncrement.setOnClickListener { viewModel.increment() }
+        binding.btRandomColor.setOnClickListener { viewModel.setRandomColor() }
 
-        state = if (savedInstanceState == null){
-            State(
-                counterValue = 0,
-                texttColor = ContextCompat.getColor(this, R.color.purple_700)
-            )
-        } else {
-            savedInstanceState.getParcelable(KEY_STATE)!!
-        }
-        renderState()
+        viewModel.initState(savedInstanceState?.getParcelable("KEY") ?: MainViewModel.State(
+            counterValue = 0,
+            textColor = ContextCompat.getColor(this, R.color.purple_700)
+        ))
+
+        viewModel.state.observe(this, Observer {
+            renderState(it)
+        })
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelable(KEY_STATE, state)
+        outState.putParcelable("KEY", viewModel.state.value)
     }
 
-    private fun increment(){
-        state.counterValue++
-        renderState()
-    }
-
-    private fun setRandomColor(){
-        state.texttColor = Color.rgb(
-            Random.nextInt(256),
-            Random.nextInt(256),
-            Random.nextInt(256)
-        )
-        renderState()
-    }
-
-    private fun renderState(){
-        binding.tvCounter.text = state.counterValue.toString()
-        binding.tvCounter.setTextColor(state.texttColor)
-    }
-
-    @Parcelize
-    class State(
-        var counterValue: Int,
-        var texttColor: Int
-    ) : Parcelable
-
-    companion object{
-        const val KEY_STATE = "STATE"
+    private fun renderState(state: MainViewModel.State) = with(binding){
+        tvCounter.text = state.counterValue.toString()
+        tvCounter.setTextColor(state.textColor)
     }
 }
